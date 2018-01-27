@@ -24,6 +24,7 @@ oc_platform_view:
     defaults:
 
         _controller: OCPlatformBundle:Advert:view
+        id:     1
 
     requirements:
 

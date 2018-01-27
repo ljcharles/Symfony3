@@ -1,37 +1,47 @@
 {# src/OC/PlatformBundle/Resources/views/Advert/index.html.twig #}
 
 
-<!DOCTYPE html>
-
-<html>
-
-<head>
-
-  <title>Bienvenue sur ma première page avec OpenClassrooms !</title>
-
-</head>
-
-<body>
+{% extends "OCPlatformBundle::layout.html.twig" %}
 
 
-  <p>
+{% block title %}
 
-    Le Hello World est un grand classique en programmation.
+  Accueil - {{ parent() }}
 
-    Il signifie énormément, car cela veut dire que vous avez
+{% endblock %}
 
-    réussi à exécuter le programme pour accomplir une tâche simple :
 
-    afficher ce hello world !
+{% block ocplatform_body %}
 
-  </p>
 
-  <a href="{{ path('oc_platform_add') }}">
+  <h2>Liste des annonces</h2>
 
-    Lien vers l'annonce d'id
 
-</a>
+  <ul>
 
-</body>
+    {% for advert in listAdverts %}
 
-</html>
+      <li>
+
+        <a href="{{ path('oc_platform_view', {'id': advert.id}) }}">
+
+          {{ advert.title }}
+
+        </a>
+
+        par {{ advert.author }},
+
+        le {{ advert.date|date('d/m/Y') }}
+
+      </li>
+
+    {% else %}
+
+      <li>Pas (encore !) d'annonces</li>
+
+    {% endfor %}
+
+  </ul>
+
+
+{% endblock %}
