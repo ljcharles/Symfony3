@@ -102,6 +102,25 @@ return $this->render('OCPlatformBundle:Advert:index.html.twig', array(
 
   public function addAction(Request $request)
   {
+    // On récupère le service
+
+    $antispam = $this->container->get('oc_platform.antispam');
+
+    // Je pars du principe que $text contient le texte d'un message quelconque
+
+    $text = 'Lorem ipsum dolor sit amet, consectetur adipisicing elit,
+    sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+    Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris
+    nisi ut aliquip ex ea commodo consequat.'; 
+
+    if ($antispam->isSpam($text)) {
+
+      throw new \Exception('Votre message a été détecté comme spam !');
+
+    }
+
+    // Ici le message n'est pas un spam
+
     // La gestion d'un formulaire est particulière, mais l'idée est la suivante :
 
     // Si la requête est en POST, c'est que le visiteur a soumis le formulaire

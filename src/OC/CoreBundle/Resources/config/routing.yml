@@ -1,0 +1,7 @@
+oc_core_homepage:
+    path:     /
+    defaults: { _controller: OCCoreBundle:Accueil:index }
+
+oc_core_contactpage:
+    path:     /contact
+    defaults: { _controller: OCCoreBundle:Accueil:contact }

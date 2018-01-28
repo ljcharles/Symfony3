@@ -1,0 +1,27 @@
+{# src/OC/CoreBundle/Resources/views/Accueil/index.html.twig #}
+
+
+{% extends "OCCoreBundle::layout.html.twig" %}
+
+
+{% block title %}
+
+  Accueil - {{ parent() }}
+
+{% endblock %}
+
+
+{% block body %}
+
+  {% for message in app.flashes('notice') %}
+    <div class="alert alert-info">
+      <i class="glyphicon glyphicon-info-sign"></i> {{ message }}
+    </div>
+  {% endfor %}
+
+  <h2>Les 3 dernières annonces</h2>
+
+  {{ render(controller("OCPlatformBundle:Advert:menu", {'limit': 3})) }}
+
+
+{% endblock %}
