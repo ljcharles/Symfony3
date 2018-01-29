@@ -1,0 +1,20 @@
+{# src/OC/PlatformBundle/Resources/views/Commande/delete.html.twig #}
+
+{% extends "OCPlatformBundle::layout.html.twig" %}
+
+{% block title %}
+  Supprimer une commande - {{ parent() }}
+{% endblock %}
+
+{% block ocplatform_body %}
+
+  <h2>Supprimer une commande</h2>
+
+  <p>
+    Etes-vous certain de vouloir supprimer la commande "{{ commande.id }}" ?
+  </p>
+
+  {# On met l'id de la commande dans la route de l'action du formulaire #}
+{{ include("OCPlatformBundle:Advert:form.html.twig") }}
+
+{% endblock %}

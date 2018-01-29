@@ -15,6 +15,27 @@ oc_platform_home:
 
         page: \d*
 
+oc_platform_home_commande:
+
+    path:      /commandeIndex
+
+    defaults:
+
+        _controller: OCPlatformBundle:Commande:index
+
+
+oc_platform_see_commande:
+
+    path:      /commande/{id}
+
+    defaults:
+
+        _controller: OCPlatformBundle:Commande:seeCommande
+        id:     1
+
+    requirements:
+
+        id: \d+
 
 
 oc_platform_view:
@@ -39,6 +60,13 @@ oc_platform_add:
 
         _controller: OCPlatformBundle:Advert:add
 
+oc_platform_add_commande:
+
+    path:      /addCommande
+
+    defaults:
+
+        _controller: OCPlatformBundle:Commande:add
 
 oc_platform_edit:
 
@@ -52,6 +80,18 @@ oc_platform_edit:
 
         id: \d+
 
+oc_platform_edit_commande:
+
+    path:      /editCommande/{id}
+
+    defaults:
+
+        _controller: OCPlatformBundle:Commande:edit
+
+    requirements:
+
+        id: \d+
+
 
 oc_platform_delete:
 
@@ -60,6 +100,18 @@ oc_platform_delete:
     defaults:
 
         _controller: OCPlatformBundle:Advert:delete
+
+    requirements:
+
+        id: \d+
+
+oc_platform_delete_commande:
+
+    path:      /deleteCommande/{id}
+
+    defaults:
+
+        _controller: OCPlatformBundle:Commande:delete
 
     requirements:
 

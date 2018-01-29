@@ -11,6 +11,6 @@ services:
 
             - "@mailer"
 
-            - %locale%
+            - '%locale%'
 
             - 50

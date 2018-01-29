@@ -1,0 +1,63 @@
+{% extends "OCPlatformBundle::layout.html.twig" %}
+
+
+{% block title %}
+
+  Lecture d'une commande - {{ parent() }}
+
+{% endblock %}
+
+
+{% block ocplatform_body %}
+
+
+  <h2>La commande {{ commande.id }}</h2>
+
+  <i>A l'adresse {{ commande.adresseLivraison }}, le {{ commande.date|date('d/m/Y') }}</i>
+
+
+    <h2>Liste des produits pour cette commande</h2>
+
+  {% if listCommandeProduct|length > 0 %}
+    <div>
+      Cette commande requiert les produits suivants :
+      <ul>
+        {% for commandeProduct in listCommandeProduct %}
+          <li>{{ commandeProduct.product.nom }}
+             : quantité {{ commandeProduct.quantityProductForOneCommande }}
+             : prix {{ commandeProduct.product.prix }}
+           </li>
+        {% endfor %}
+      </ul>
+    </div>
+  {% endif %}
+  <p>
+
+    <a href="{{ path('oc_platform_home_commande') }}" class="btn btn-default">
+
+      <i class="glyphicon glyphicon-chevron-left"></i>
+
+      Retour à la liste
+
+    </a>
+
+    <a href="{{ path('oc_platform_edit_commande', {'id': commande.id}) }}" class="btn btn-default">
+
+      <i class="glyphicon glyphicon-edit"></i>
+
+      Modifier la commande
+
+    </a>
+
+    <a href="{{ path('oc_platform_delete_commande', {'id': commande.id}) }}" class="btn btn-danger">
+
+      <i class="glyphicon glyphicon-trash"></i>
+
+      Supprimer la commande
+
+    </a>
+
+  </p>
+
+
+{% endblock %}

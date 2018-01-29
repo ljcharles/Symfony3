@@ -1,0 +1,19 @@
+{# src/OC/PlatformBundle/Resources/views/Commande/add.html.twig #}
+
+
+{% extends "OCPlatformBundle::layout.html.twig" %}
+
+{% block title %}
+  Ajouter une commande - {{ parent() }}
+{% endblock %}
+
+{% block body %}
+  <h2>Ajouter une commande</h2>
+
+  {{ include("OCPlatformBundle:Commande:form.html.twig") }}
+
+  <p>
+    Attention : cette commande sera ajoutée directement
+    sur la page des commandes après validation du formulaire.
+  </p>
+{% endblock %}

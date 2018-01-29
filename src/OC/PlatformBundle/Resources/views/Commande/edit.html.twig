@@ -1,0 +1,25 @@
+{# src/OC/PlatformBundle/Resources/views/Commande/edit.html.twig #}
+
+{% extends "OCPlatformBundle::layout.html.twig" %}
+
+{% block title %}
+  Modifier une commande - {{ parent() }}
+{% endblock %}
+
+
+{% block ocplatform_body %}
+  <h2>Modifier une commande</h2>
+
+  {{ include("OCPlatformBundle:Commande:form.html.twig") }}
+
+  <p>
+    Vous éditez une commande déjà existante.
+  </p>
+
+  <p>
+    <a href="{{ path('oc_platform_see_commande', {'id': commande.id}) }}" class="btn btn-default">
+      <i class="glyphicon glyphicon-chevron-left"></i>
+      Retour à la commande
+    </a>
+  </p>
+{% endblock %}

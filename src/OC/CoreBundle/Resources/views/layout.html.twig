@@ -38,6 +38,12 @@
           <li><a href="{{ path('oc_core_contactpage') }}">Nous contacter</a></li>
         </ul>
 
+        <h3>Les commandes</h3>
+        <ul class="nav nav-pills nav-stacked">
+          <li><a href="{{ path('oc_platform_home_commande') }}">Voir toutes les commandes</a></li>
+          <li><a href="{{ path('oc_platform_add_commande') }}">Ajouter une commande</a></li>
+        </ul>
+
         <h4>Dernières annonces</h4>
         {{ render(controller("OCPlatformBundle:Advert:menu", {'limit': 3})) }}
       </div>

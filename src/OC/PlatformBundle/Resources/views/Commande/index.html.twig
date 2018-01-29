@@ -1,0 +1,26 @@
+{# src/OC/PlatformBundle/Resources/views/Commande/index.html.twig #}
+{% extends "OCPlatformBundle::layout.html.twig" %}
+
+{% block title %}
+  Les commandes - {{ parent() }}
+{% endblock %}
+
+
+{% block ocplatform_body %}
+  <h2>Liste des commandes</h2>
+
+  <ul>
+    {% for commande in listCommandes %}
+      <li>
+        <a href="{{ path('oc_platform_see_commande', {'id': commande.id}) }}">
+            Commande numéro : {{ commande.id }}
+        </a>
+        avec l'adresse suivante : {{ commande.adresseLivraison }},
+        le {{ commande.date|date('d/m/Y') }}
+      </li>
+
+    {% else %}
+      <li>Pas (encore !) de commandes</li>
+    {% endfor %}
+  </ul>
+{% endblock %}
