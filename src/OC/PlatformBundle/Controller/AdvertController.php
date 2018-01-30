@@ -33,7 +33,7 @@ class AdvertController extends Controller
 
         'title'   => 'Recherche développpeur Symfony',
 
-        'id'      => 35,
+        'id'      => 1,
 
         'author'  => 'Alexandre',
 
@@ -45,7 +45,7 @@ class AdvertController extends Controller
 
           'title'   => 'Mission de webmaster',
 
-          'id'      => 36,
+          'id'      => 2,
 
           'author'  => 'Hugo',
 
@@ -57,7 +57,7 @@ class AdvertController extends Controller
 
             'title'   => 'Offre de stage webdesigner',
 
-            'id'      => 37,
+            'id'      => 3,
 
             'author'  => 'Mathieu',
 
@@ -392,11 +392,11 @@ class AdvertController extends Controller
 
           $listAdverts = array(
 
-            array('id' => 35, 'title' => 'Recherche développeur Symfony'),
+            array('id' => 1, 'title' => 'Recherche développeur Symfony'),
 
-            array('id' => 36, 'title' => 'Mission de webmaster'),
+            array('id' => 2, 'title' => 'Mission de webmaster'),
 
-            array('id' => 37, 'title' => 'Offre de stage webdesigner')
+            array('id' => 3, 'title' => 'Offre de stage webdesigner')
 
           );
 
