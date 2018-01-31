@@ -14,14 +14,15 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class AdvertController extends Controller
 {
-  public function indexAction($page)
+  public function indexAction($page=1)
   {
     // On ne sait pas combien de pages il y a
     // Mais on sait qu'une page doit être supérieure ou égale à 1
     if ($page < 1) {
       // On déclenche une exception NotFoundHttpException, cela va afficher
       // une page d'erreur 404 (qu'on pourra personnaliser plus tard d'ailleurs)
-      throw new NotFoundHttpException('Page "'.$page.'" inexistante.');
+      //throw new NotFoundHttpException('Page "'.$page.'" inexistante.');
+      return $this->redirectToRoute('oc_platform_default');
     }
 
     // Ici, on récupérera la liste des annonces, puis on la passera au template
@@ -95,7 +96,8 @@ class AdvertController extends Controller
 
           if (null === $advert) {
 
-            throw new NotFoundHttpException("L'annonce d'id ".$id." n'existe pas.");
+             throw new NotFoundHttpException("L'annonce d'id ".$id." n'existe pas.");
+            //return $this->redirectToRoute('oc_platform_default');
 
           }
 
