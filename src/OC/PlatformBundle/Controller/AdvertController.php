@@ -14,59 +14,24 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class AdvertController extends Controller
 {
-  public function indexAction($page=1)
-  {
-    // On ne sait pas combien de pages il y a
-    // Mais on sait qu'une page doit être supérieure ou égale à 1
-    if ($page < 1) {
-      // On déclenche une exception NotFoundHttpException, cela va afficher
-      // une page d'erreur 404 (qu'on pourra personnaliser plus tard d'ailleurs)
-      //throw new NotFoundHttpException('Page "'.$page.'" inexistante.');
-      return $this->redirectToRoute('oc_platform_default');
-    }
+      public function indexAction($page=1)
+      {
+          // On ne sait pas combien de pages il y a
+          // Mais on sait qu'une page doit être supérieure ou égale à 1
+          if ($page < 1) {
+            // On déclenche une exception NotFoundHttpException, cela va afficher
+            // une page d'erreur 404 (qu'on pourra personnaliser plus tard d'ailleurs)
+            //throw new NotFoundHttpException('Page "'.$page.'" inexistante.');
+            return $this->redirectToRoute('oc_platform_default');
+          }
 
-    // Ici, on récupérera la liste des annonces, puis on la passera au template
+          $repository = $this
+            ->getDoctrine()
+            ->getManager()
+            ->getRepository('OCPlatformBundle:Advert')
+          ;
 
-    // Mais pour l'instant, on ne fait qu'appeler le template
-    $listAdverts = array(
-
-      array(
-
-        'title'   => 'Recherche développpeur Symfony',
-
-        'id'      => 1,
-
-        'author'  => 'Alexandre',
-
-        'content' => 'Nous recherchons un développeur Symfony débutant sur Lyon. Blabla…',
-
-        'date'    => new \Datetime()),
-
-        array(
-
-          'title'   => 'Mission de webmaster',
-
-          'id'      => 2,
-
-          'author'  => 'Hugo',
-
-          'content' => 'Nous recherchons un webmaster capable de maintenir notre site internet. Blabla…',
-
-          'date'    => new \Datetime()),
-
-          array(
-
-            'title'   => 'Offre de stage webdesigner',
-
-            'id'      => 3,
-
-            'author'  => 'Mathieu',
-
-            'content' => 'Nous proposons un poste pour webdesigner. Blabla…',
-
-            'date'    => new \Datetime())
-
-          );
+          $listAdverts = $repository->myFindAll();
 
 
           // Et modifiez le 2nd argument pour injecter notre liste
@@ -155,17 +120,12 @@ class AdvertController extends Controller
           $advert->setContent("Nous recherchons un développeur Symfony débutant sur Lyon. Blabla…");
 
           // On peut ne pas définir ni la date ni la publication,
-
           // car ces attributs sont définis automatiquement dans le constructeur
-
           // Création de l'entité Image
 
           $image = new Image();
-
           $image->setUrl('http://sdz-upload.s3.amazonaws.com/prod/upload/job-de-reve.jpg');
-
           $image->setAlt('Job de rêve');
-
 
           // On lie l'image à l'annonce
 
@@ -183,28 +143,15 @@ class AdvertController extends Controller
           foreach ($listSkills as $skill) {
 
             // On crée une nouvelle « relation entre 1 annonce et 1 compétence »
-
             $advertSkill = new AdvertSkill();
-
-
             // On la lie à l'annonce, qui est ici toujours la même
-
             $advertSkill->setAdvert($advert);
-
             // On la lie à la compétence, qui change ici dans la boucle foreach
-
             $advertSkill->setSkill($skill);
-
-
             // Arbitrairement, on dit que chaque compétence est requise au niveau 'Expert'
-
             $advertSkill->setLevel('Expert');
-
-
             // Et bien sûr, on persiste cette entité de relation, propriétaire des deux autres relations
-
             $em->persist($advertSkill);
-
           }
 
           // Création d'une première candidature
@@ -301,9 +248,7 @@ class AdvertController extends Controller
           }
 
           // Pour persister le changement dans la relation, il faut persister l'entité propriétaire
-
           // Ici, Advert est le propriétaire, donc inutile de la persister car on l'a récupérée depuis Doctrine
-
           // Étape 2 : On déclenche l'enregistrement
 
           $em->flush();
@@ -314,21 +259,6 @@ class AdvertController extends Controller
 
             return $this->redirectToRoute('oc_platform_view', array('id' => $id));
           }
-
-          // $advert = array(
-          //
-          //   'title'   => 'Recherche développpeur Symfony',
-          //
-          //   'id'      => $id,
-          //
-          //   'author'  => 'Alexandre',
-          //
-          //   'content' => 'Nous recherchons un développeur Symfony débutant sur Lyon. Blabla…',
-          //
-          //   'date'    => new \Datetime()
-          //
-          // );
-
 
           return $this->render('OCPlatformBundle:Advert:edit.html.twig', array(
 
@@ -360,22 +290,6 @@ class AdvertController extends Controller
           // On déclenche la modification
           $em->flush();
 
-          // Ici, on gérera la suppression de l'annonce en question
-
-          // $advert = array(
-          //
-          //   'title'   => 'Recherche développpeur Symfony',
-          //
-          //   'id'      => $id,
-          //
-          //   'author'  => 'Alexandre',
-          //
-          //   'content' => 'Nous recherchons un développeur Symfony débutant sur Lyon. Blabla…',
-          //
-          //   'date'    => new \Datetime()
-          //
-          // );
-
 
           return $this->render('OCPlatformBundle:Advert:delete.html.twig', array(
 
@@ -385,67 +299,59 @@ class AdvertController extends Controller
         }
 
         public function menuAction($limit)
-
         {
 
-          // On fixe en dur une liste ici, bien entendu par la suite
+          $repository = $this
+            ->getDoctrine()
+            ->getManager()
+            ->getRepository('OCPlatformBundle:Advert')
+          ;
 
-          // on la récupérera depuis la BDD !
-
-          $listAdverts = array(
-
-            array('id' => 1, 'title' => 'Recherche développeur Symfony'),
-
-            array('id' => 2, 'title' => 'Mission de webmaster'),
-
-            array('id' => 3, 'title' => 'Offre de stage webdesigner')
-
-          );
-
+          $listAdverts = $repository->myFindAll();
 
           return $this->render('OCPlatformBundle:Advert:menu.html.twig', array(
-
-            // Tout l'intérêt est ici : le contrôleur passe
-
-            // les variables nécessaires au template !
-
             'listAdverts' => $listAdverts
-
           ));
 
         }
 
         public function editImageAction($advertId)
-
         {
 
           $em = $this->getDoctrine()->getManager();
 
-
           // On récupère l'annonce
-
           $advert = $em->getRepository('OCPlatformBundle:Advert')->find($advertId);
 
-
           // On modifie l'URL de l'image par exemple
-
           $advert->getImage()->setUrl('test.png');
 
-
           // On n'a pas besoin de persister l'annonce ni l'image.
-
           // Rappelez-vous, ces entités sont automatiquement persistées car
-
           // on les a récupérées depuis Doctrine lui-même
-
-
-
           // On déclenche la modification
 
           $em->flush();
-
-
           return new Response('OK');
 
         }
+
+        public function listAction()
+        {
+          $listAdverts = $this
+            ->getDoctrine()
+            ->getManager()
+            ->getRepository('OCPlatformBundle:Advert')
+            ->getAdvertWithApplications()
+          ;
+
+          foreach ($listAdverts as $advert) {
+            // Ne déclenche pas de requête : les candidatures sont déjà chargées !
+            // Vous pourriez faire une boucle dessus pour les afficher toutes
+            $advert->getApplications();
+          }
+
+          // …
+        }
+
       }

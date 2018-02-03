@@ -10,4 +10,12 @@ namespace OC\PlatformBundle\Repository;
  */
 class ProductRepository extends \Doctrine\ORM\EntityRepository
 {
+  public function findAllOrderedByName()
+    {
+        return $this->getEntityManager()
+            ->createQuery(
+                'SELECT p FROM OCPlatformBundleBundle:Product p ORDER BY p.name ASC'
+            )
+            ->getResult();
+    }
 }
