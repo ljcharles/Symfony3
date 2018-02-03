@@ -3,6 +3,7 @@
 namespace OC\PlatformBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Gedmo\Mapping\Annotation as Gedmo;
 use Doctrine\Common\Collections\ArrayCollection;
 
 /**
@@ -60,17 +61,13 @@ class Advert
     private $content;
 
     /**
-
    * @ORM\Column(name="published", type="boolean")
-
    */
     private $published = true;
 
 
     /**
-
     * @ORM\OneToOne(targetEntity="OC\PlatformBundle\Entity\Image", cascade={"persist"})
-
     */
     private $image;
 
@@ -95,6 +92,12 @@ class Advert
      */
     private $nbApplications = 0;
 
+    /**
+     * @Gedmo\Slug(fields={"title"})
+     * @ORM\Column(name="slug", type="string", length=255)
+     */
+    private $slug;
+
     public function __construct()
 
       {
@@ -102,6 +105,8 @@ class Advert
         // Par défaut, la date de l'annonce est la date d'aujourd'hui
 
         $this->date = new \Datetime();
+        $this->categories   = new ArrayCollection();
+        $this->applications = new ArrayCollection();
 
       }
 
@@ -421,5 +426,29 @@ class Advert
     public function getEmail()
     {
         return $this->email;
+    }
+
+    /**
+     * Set slug
+     *
+     * @param string $slug
+     *
+     * @return Advert
+     */
+    public function setSlug($slug)
+    {
+        $this->slug = $slug;
+
+        return $this;
+    }
+
+    /**
+     * Get slug
+     *
+     * @return string
+     */
+    public function getSlug()
+    {
+        return $this->slug;
     }
 }

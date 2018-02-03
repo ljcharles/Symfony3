@@ -38,6 +38,12 @@ twig:
     debug: '%kernel.debug%'
     strict_variables: '%kernel.debug%'
 
+# Stof\DoctrineExtensionsBundle configuration
+stof_doctrine_extensions:
+    orm:
+        default:
+            sluggable: true
+
 # Doctrine Configuration
 doctrine:
     dbal:

@@ -28,6 +28,9 @@ class ApplicationCreationListener
       return;
     }
 
-    $this->applicationMailer->sendNewNotification($entity);
+    try {
+      $this->applicationMailer->sendNewNotification($entity);
+    } catch (\Exception $e) {
+    }
   }
 }
