@@ -9,8 +9,11 @@ use OC\PlatformBundle\Entity\Advert;
 use OC\PlatformBundle\Entity\Image;
 use OC\PlatformBundle\Entity\Application;
 use OC\PlatformBundle\Entity\AdvertSkill;
+use OC\PlatformBundle\Form\AdvertType;
+use OC\PlatformBundle\Form\AdvertEditType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+
 
 class AdvertController extends Controller
 {
@@ -97,16 +100,25 @@ class AdvertController extends Controller
           throw new \Exception('Votre message a été détecté comme spam !');
         }
 
-        // On récupère l'EntityManager
-        $em = $this->getDoctrine()->getManager();
+        // On crée un objet Advert
+        $advert = new Advert();
+        $form = $this->createForm(AdvertType::class, $advert);
 
-        if ($request->isMethod('POST')) {
-          $request->getSession()->getFlashBag()->add('notice', 'Annonce bien enregistrée.');
-          return $this->redirectToRoute('oc_platform_view', array('id' => $advert->getId()));
+        if ($request->isMethod('POST') && $form->handleRequest($request)->isValid())
+        {
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($advert);
+            $em->flush();
+
+            $request->getSession()->getFlashBag()->add('success', 'Annonce bien enregistrée.');
+
+            // On redirige vers la page de visualisation de l'annonce nouvellement créée ou modifiée
+            return $this->redirectToRoute('oc_platform_view', array('id' => $advert->getId()));
         }
 
-        // Si on n'est pas en POST, alors on affiche le formulaire
-        return $this->render('OCPlatformBundle:Advert:add.html.twig');
+        return $this->render('OCPlatformBundle:Advert:add.html.twig', array(
+          'form' => $form->createView(),
+        ));
       }
 
       public function editAction($id, Request $request)
@@ -119,39 +131,51 @@ class AdvertController extends Controller
           throw new NotFoundHttpException("L'annonce d'id ".$id." n'existe pas.");
         }
 
-        if ($request->isMethod('POST')) {
-          $request->getSession()->getFlashBag()->add('notice', 'Annonce bien modifiée.');
-          return $this->redirectToRoute('oc_platform_view', array('id' => $id));
+        $form = $this->createForm(AdvertEditType::class, $advert);
+        // Si la requête est en POST
+        if ($request->isMethod('POST') && $form->handleRequest($request)->isValid())
+        {
+            $em->flush();
+
+            $request->getSession()->getFlashBag()->add('success', 'Annonce bien modifiée.');
+
+            // On redirige vers la page de visualisation de l'annonce nouvellement créée ou modifiée
+            return $this->redirectToRoute('oc_platform_view', array('id' => $advert->getId()));
         }
 
         return $this->render('OCPlatformBundle:Advert:edit.html.twig', array(
+          'form' => $form->createView(),
           'advert' => $advert
         ));
       }
 
-      public function deleteAction($id)
+      public function deleteAction(Request $request, $id)
       {
-        // Ici, on récupérera l'annonce correspondant à $id
         $em = $this->getDoctrine()->getManager();
 
-        // On récupère l'annonce $id
         $advert = $em->getRepository('OCPlatformBundle:Advert')->find($id);
 
         if (null === $advert) {
           throw new NotFoundHttpException("L'annonce d'id ".$id." n'existe pas.");
         }
 
-        // On boucle sur les catégories de l'annonce pour les supprimer
-        foreach ($advert->getCategories() as $category) {
-          $advert->removeCategory($category);
+        // On crée un formulaire vide, qui ne contiendra que le champ CSRF
+        // Cela permet de protéger la suppression d'annonce contre cette faille
+        $form = $this->get('form.factory')->create();
+
+        if ($request->isMethod('POST') && $form->handleRequest($request)->isValid()) {
+          $em->remove($advert);
+          $em->flush();
+
+          $request->getSession()->getFlashBag()->add('info', "L'annonce a bien été supprimée.");
+
+          return $this->redirectToRoute('oc_platform_home');
         }
 
-        // Pour persister le changement dans la relation, il faut persister l'entité propriétaire
-        // Ici, Advert est le propriétaire, donc inutile de la persister car on l'a récupérée depuis Doctrine
-        // On déclenche la modification
-        $em->flush();
-
-        return $this->render('OCPlatformBundle:Advert:delete.html.twig');
+        return $this->render('OCPlatformBundle:Advert:delete.html.twig', array(
+          'advert' => $advert,
+          'form'   => $form->createView(),
+        ));
       }
 
       public function menuAction($limit)
