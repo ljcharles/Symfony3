@@ -154,7 +154,7 @@ class AdvertController extends Controller
         $em = $this->getDoctrine()->getManager();
 
         $advert = $em->getRepository('OCPlatformBundle:Advert')->find($id);
-
+        
         if (null === $advert) {
           throw new NotFoundHttpException("L'annonce d'id ".$id." n'existe pas.");
         }

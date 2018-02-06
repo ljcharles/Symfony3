@@ -78,7 +78,7 @@ class Advert
     private $categories;
 
     /**
-    * @ORM\OneToMany(targetEntity="OC\PlatformBundle\Entity\Application", mappedBy="advert")
+    * @ORM\OneToMany(targetEntity="OC\PlatformBundle\Entity\Application", mappedBy="advert", cascade={"remove"})
     */
     private $applications; // Notez le « s », une annonce est liée à plusieurs candidatures
 
@@ -97,6 +97,11 @@ class Advert
      * @ORM\Column(name="slug", type="string", length=255)
      */
     private $slug;
+
+    /**
+     * @ORM\OneToMany(targetEntity="OC\PlatformBundle\Entity\AdvertSkill", mappedBy="advert", cascade={"remove"})
+     */
+    private $listAdvertSkill;
 
     public function __construct()
 
